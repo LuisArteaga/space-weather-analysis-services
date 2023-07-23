@@ -10,10 +10,9 @@ storage_container = AzureServicesConnector.get_container_client()
 extraction_start_date = "2023-06-23"
 extraction_end_date = "2023-07-23"
 
-sample_data = NasaGovAPI.extract_coronal_mass_ejection(extraction_start_date, extraction_end_date)
+extract_cme_status = NasaGovAPI.extract_coronal_mass_ejection(start_date=extraction_start_date, end_date=extraction_end_date, storage_container=storage_container)
 
-storage_container.upload_blob(name="nasa-gov/donki/coronal-mass-ejection/01-raw/sample_data.json", data=sample_data)
-
+print(extract_cme_status)
 
 #print(next(service.list_containers()))
 
