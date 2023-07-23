@@ -1,26 +1,18 @@
-import os
-import requests
 import config
+from source.nasa import NasaGovAPI
 
 AzureServicesConnector = config.AzureServicesConnector()
+NasaGovAPI = NasaGovAPI()
 
-AZURE_KEY_VAULT_API_NAME_NASA_GOV = os.environ['AZURE_KEY_VAULT_API_NAME_NASA_GOV']
-AZURE_STORAGE_CONTAINER_NAME = os.environ['AZURE_STORAGE_CONTAINER_NAME']
+nasa_api_key = AzureServicesConnector.get_secret(NasaGovAPI.get_key_vault_api_name_nasa_gov())
+storage_container = AzureServicesConnector.get_container_client()
 
-nasa_api_key = AzureServicesConnector.get_secret(AZURE_KEY_VAULT_API_NAME_NASA_GOV)
-storage_container = AzureServicesConnector.get_container_client(AZURE_STORAGE_CONTAINER_NAME)
+extraction_start_date = "2023-06-23"
+extraction_end_date = "2023-07-23"
 
-def retrieve_data_from_nasa_api(api_key, start_date, end_date):
-    url = f"https://api.nasa.gov/DONKI/CME?startDate={start_date}&endDate={end_date}&api_key={api_key}"
-    response = requests.get(url)
-    data = response
-    return data
-
-sample_data = retrieve_data_from_nasa_api(nasa_api_key, "2023-06-23", "2023-07-23")
+sample_data = NasaGovAPI.extract_coronal_mass_ejection(extraction_start_date, extraction_end_date)
 
 storage_container.upload_blob(name="nasa-gov/donki/coronal-mass-ejection/01-raw/sample_data.json", data=sample_data)
-
-
 
 
 #print(next(service.list_containers()))
