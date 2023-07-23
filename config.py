@@ -9,6 +9,8 @@ SERVICE_PRINCIPAL_AZURE_APP_ID = os.environ['SERVICE_PRINCIPAL_AZURE_APP_ID']
 SERVICE_PRINCIPAL_AZURE_APP_SECRET = os.environ['SERVICE_PRINCIPAL_AZURE_APP_SECRET']
 AZURE_KEY_VAULT_URL = os.environ['AZURE_KEY_VAULT_URL']
 AZURE_STORAGE_ACCOUNT_URL = os.environ['AZURE_STORAGE_ACCOUNT_URL']
+AZURE_STORAGE_CONTAINER_NAME = os.environ['AZURE_STORAGE_CONTAINER_NAME']
+
 
 class AzureServicesConnector():
     def __init__(self):
@@ -25,9 +27,10 @@ class AzureServicesConnector():
             account_url=AZURE_STORAGE_ACCOUNT_URL,
             credential=self.credential
         )
+        self.container_client = self.blob_service_client.get_container_client(AZURE_STORAGE_CONTAINER_NAME)
 
     def get_secret(self, secret_name):
         return self.key_vault_client.get_secret(secret_name).value
 
-    def get_container_client(self, container_name):
-        return self.blob_service_client.get_container_client(container_name)
+    def get_container_client(self):
+        return self.container_client
