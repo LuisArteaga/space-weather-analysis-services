@@ -1,4 +1,5 @@
 import os
+import datetime
 import requests
 
 class NasaGovAPI():
@@ -12,9 +13,12 @@ class NasaGovAPI():
         
     def extract_coronal_mass_ejection(self, start_date, end_date, storage_container):
         url = f"https://api.nasa.gov/DONKI/CME?startDate={start_date}&endDate={end_date}&api_key={self.key_vault_api_name_nasa_gov}"
-        #Todo: add generation timestamp to file name
-        file_name = f"nasa-gov/donki/coronal-mass-ejection/01-raw/coronal_mass_ejection_{start_date}_{end_date}.json"
-        response = requests.get(url)
+        start_date_stripped = start_date.replace("-", "")
+        end_date_stripped = end_date.replace("-", "") 
+        
+        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        file_name = f"nasa-gov/donki/coronal-mass-ejection/01-raw/coronal_mass_ejection__refdate_{start_date_stripped}_to_{end_date_stripped}__created_on_{timestamp}.json"
+        response = requests.get(url, timeout=30)
         data = response
         storage_container.upload_blob(name=file_name, data=data)
         
