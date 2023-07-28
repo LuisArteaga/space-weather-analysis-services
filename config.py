@@ -13,6 +13,9 @@ AZURE_STORAGE_CONTAINER_NAME = os.environ['AZURE_STORAGE_CONTAINER_NAME']
 
 
 class AzureServicesConnector():
+    ''' 
+    Class manages connections to all Azure Services
+    '''
     def __init__(self):
         self.credential = ClientSecretCredential(
             tenant_id=AZURE_TENANT_ID,
@@ -30,6 +33,9 @@ class AzureServicesConnector():
         self.container_client = self.blob_service_client.get_container_client(AZURE_STORAGE_CONTAINER_NAME)
 
     def get_secret(self, secret_name):
+        ''' 
+        Return API Key from Azure Key Vault
+        '''
         return self.key_vault_client.get_secret(secret_name).value
 
     def get_container_client(self):
