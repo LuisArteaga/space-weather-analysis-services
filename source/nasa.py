@@ -21,8 +21,8 @@ class NasaGovAPI():
         
         return file_name
     
-    def extract_coronal_mass_ejection(self, start_date, end_date, storage_container):
-        url = f"https://api.nasa.gov/DONKI/CME?startDate={start_date}&endDate={end_date}&api_key={self.key_vault_api_name_nasa_gov}"
+    def extract_coronal_mass_ejection(self, start_date, end_date, storage_container, api_key):
+        url = f"https://api.nasa.gov/DONKI/CME?startDate={start_date}&endDate={end_date}&api_key={api_key}"
 
         file_name = self._create_file_name(start_date, end_date, "coronal-mass-ejection")
         response = requests.get(url, timeout=30)
