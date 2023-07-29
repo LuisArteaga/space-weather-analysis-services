@@ -7,7 +7,15 @@ class NasaGovAPI():
     def __init__(self):
         self.key_vault_api_name_nasa_gov = os.environ['AZURE_KEY_VAULT_API_NAME_NASA_GOV']
         self.azure_storage_container_name = os.environ['AZURE_STORAGE_CONTAINER_NAME']
-
+        self.api_list = {'coronal-mass-ejection': 'https://api.nasa.gov/DONKI/CME',
+                         'geomagnetic-storm' : 'https://api.nasa.gov/DONKI/GST',
+                         'solar-flare': 'https://api.nasa.gov/DONKI/FLR',
+                         'solar-energetic-particle': 'https://api.nasa.gov/DONKI/SEP',
+                         'magnetopause-crossing': 'https://api.nasa.gov/DONKI/MPC',
+                         'radiation-belt-enhancement': 'https://api.nasa.gov/DONKI/RBE','hight-speed-stream': 'https://api.nasa.gov/DONKI/HSS',
+                         'WSA-Enlil-Simulation': 'https://api.nasa.gov/DONKI/WSAEnlilSimulations',
+                         'notifications': 'https://api.nasa.gov/DONKI/notifications'}
+    
     def get_key_vault_api_name_nasa_gov(self):
         return self.key_vault_api_name_nasa_gov
     
