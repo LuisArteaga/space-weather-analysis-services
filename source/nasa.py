@@ -10,14 +10,21 @@ class NasaGovAPI():
 
     def get_key_vault_api_name_nasa_gov(self):
         return self.key_vault_api_name_nasa_gov
+    
+    def _create_file_name(self, start_date, end_date, api_name):
+        start_date_stripped = start_date.replace("-", "")
+        end_date_stripped = end_date.replace("-", "")
+        folder_name = f"nasa-gov/donki/{api_name}/01-raw/"
+        timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
         
+        file_name = f"{folder_name}{api_name}-refdate-from-{start_date_stripped}-to-{end_date_stripped}-created-on-{timestamp}.json"
+        
+        return file_name
+    
     def extract_coronal_mass_ejection(self, start_date, end_date, storage_container):
         url = f"https://api.nasa.gov/DONKI/CME?startDate={start_date}&endDate={end_date}&api_key={self.key_vault_api_name_nasa_gov}"
-        start_date_stripped = start_date.replace("-", "")
-        end_date_stripped = end_date.replace("-", "") 
-        
-        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        file_name = f"nasa-gov/donki/coronal-mass-ejection/01-raw/coronal_mass_ejection__refdate_{start_date_stripped}_to_{end_date_stripped}__created_on_{timestamp}.json"
+
+        file_name = self._create_file_name(start_date, end_date, "coronal-mass-ejection")
         response = requests.get(url, timeout=30)
         data = response
         storage_container.upload_blob(name=file_name, data=data)
